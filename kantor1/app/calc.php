@@ -10,7 +10,7 @@ require_once dirname(__FILE__).'/../config.php';
 
 $kwota = $_REQUEST ['kwota'];
 $kurs = $_REQUEST ['kurs'];
-$math = $_REQUEST ['prz'];
+$przelicznik = $_REQUEST ['prz'];
 
 // 2. walidacja parametrów z przygotowaniem zmiennych dla widoku
 
@@ -49,19 +49,17 @@ if (empty ( $messages )) { // gdy brak błędów
 	$kwota = floatval($kwota);
 	$kurs = floatval($kurs);
 
-	//konwersja wartości z radio buttonów na $_POST
-
-	$przelicznik = $_POST['prz'];
-
-	//wykonanie operacji
-	
-	if ($przelicznik == "euroZlote") {          
-		$result = $kwota * $kurs;     
+	switch ($przelicznik) {
+		case 'euroZlote' :
+			$result = ($kwota * $kurs);
+			$result = round($result,2);
+		}
+			break;
+		case 'zloteEuro' :
+			$result = ($kwota / $kurs);
+			$result = round($result,2);
+		}
 	}
-	else {
-		$result = ($kwota / $kurs);
-		$result = round($result,2);
-	}          
 }
 
 // 4. Wywołanie widoku z przekazaniem zmiennych
